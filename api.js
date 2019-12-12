@@ -7,7 +7,7 @@ const socket = openSocket("http://35.154.54.127:7896");
 
 const apiKey = "YOUR Key Here"
 /**
- * ## How to use it
+ *
 * Ask myearth.id to register yourself as Vendor. Once Registered you will get apiKey.
 
 * Now put this apiKey in api.js file
@@ -22,8 +22,8 @@ const apiKey = "YOUR Key Here"
 
 * Call generateqr for getting QR code data to be scanned by mobile.
 
- */
- 
+*/
+
 const externalFunctions = {
 /**
  * Generates socket Id Called once and store it persistently somewhere

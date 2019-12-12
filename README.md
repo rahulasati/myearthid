@@ -3,19 +3,16 @@
 ### Table of Contents
 
 -   [externalFunctions][1]
--   [How to use it][2]
-    -   [generateReqNo][3]
-    -   [getApiKey][4]
-    -   [generateqr][5]
-        -   [Parameters][6]
-    -   [listenForServiceProviderResponse][7]
-        -   [Parameters][8]
-    -   [listenForUserData][9]
-        -   [Parameters][10]
+    -   [generateReqNo][2]
+    -   [getApiKey][3]
+    -   [generateqr][4]
+        -   [Parameters][5]
+    -   [listenForServiceProviderResponse][6]
+        -   [Parameters][7]
+    -   [listenForUserData][8]
+        -   [Parameters][9]
 
 ## externalFunctions
-
-## How to use it
 
 Ask myearth.id to register yourself as Vendor. Once Registered you will get apiKey.
 
@@ -47,7 +44,7 @@ API for generating QR Code
 
 #### Parameters
 
--   `requestNo` **[string][11]** Socket Id for listening.
+-   `requestNo` **[string][10]** Socket Id for listening.
 
 ### listenForServiceProviderResponse
 
@@ -69,22 +66,20 @@ Socket listening for user Data after approval from user through app
 
 [1]: #externalfunctions
 
-[2]: #how-to-use-it
+[2]: #generatereqno
 
-[3]: #generatereqno
+[3]: #getapikey
 
-[4]: #getapikey
+[4]: #generateqr
 
-[5]: #generateqr
+[5]: #parameters
 
-[6]: #parameters
+[6]: #listenforserviceproviderresponse
 
-[7]: #listenforserviceproviderresponse
+[7]: #parameters-1
 
-[8]: #parameters-1
+[8]: #listenforuserdata
 
-[9]: #listenforuserdata
+[9]: #parameters-2
 
-[10]: #parameters-2
-
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
