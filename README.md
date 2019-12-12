@@ -1,2 +1,2 @@
 # myearthid
-Repo fo rMy Earth ID SDKs
+Repo for My Earth ID SDKs
