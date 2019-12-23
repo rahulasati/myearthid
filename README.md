@@ -3,14 +3,23 @@
 ### Table of Contents
 
 -   [getApiKey][1]
--   [generateqr][2]
-    -   [Examples][3]
--   [listenForServiceProviderResponse][4]
-    -   [Parameters][5]
-    -   [Examples][6]
--   [listenForUserData][7]
-    -   [Parameters][8]
-    -   [Examples][9]
+-   [getApiKey][2]
+-   [generateqr][3]
+    -   [Examples][4]
+-   [listenForServiceProviderResponse][5]
+    -   [Parameters][6]
+    -   [Examples][7]
+-   [listenForUserData][8]
+    -   [Parameters][9]
+    -   [Examples][10]
+
+## getApiKey
+
+How to use it 
+1\. Register yourself as vendor with myearth.id and paste the api key in api.js file
+2\. Call GenerateQR for generating qr code on your application
+3\. Call listenForServiceProviderResponse once the qr code is generated 
+4\. Call listenForUserData from your code to get the user data from Hedera
 
 ## getApiKey
 
@@ -60,7 +69,7 @@ Socket listening for user Data after approval from user through app
 ### Examples
 
 ```javascript
-response successfull
+// Response successfull
 newreq:{
 "pressed":false,
 "userEmail":"srvo@gmail.com",
@@ -79,18 +88,20 @@ newreq:{
 
 [1]: #getapikey
 
-[2]: #generateqr
+[2]: #getapikey-1
 
-[3]: #examples
+[3]: #generateqr
 
-[4]: #listenforserviceproviderresponse
+[4]: #examples
 
-[5]: #parameters
+[5]: #listenforserviceproviderresponse
 
-[6]: #examples-1
+[6]: #parameters
 
-[7]: #listenforuserdata
+[7]: #examples-1
 
-[8]: #parameters-1
+[8]: #listenforuserdata
 
-[9]: #examples-2
+[9]: #parameters-1
+
+[10]: #examples-2
