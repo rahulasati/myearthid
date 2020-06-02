@@ -1,105 +1,109 @@
 import axios from 'axios';
-import openSocket from "socket.io-client";
-const api = "http://35.154.54.127:3068";
-const socket = openSocket("http://35.154.54.127:7896", {transports: ['websocket', 'polling', 'flashsocket'] });
-let socketId;
-socket.on('connect',()=>{
-    socketId = socket.id
-    console.log("Heres socketId ",socketId)
-})
-const apiKey = "BNBUQUTPSYH"
-const externalFunctions = {
-    
-/**
- * Returns API Key for vendor
- * 
- */
-    async getApiKey(){
-        return apiKey
-    },    
-/**
- * API for generating QR Code 
- * @example response 
- * qrData=`{"apikey":"werty","encryptionkey":"1234567","reqNo":"qwertyuuytr","sessionKey":"wertyuytresd" }`  
- */    
-    async  generateqr() {
-        return new Promise((resolve, reject) => {
-            console.log("apiKey ",apiKey)
-            try{
-            if(!apiKey){
-                return new Error("apiKey not availaible")
+import crypto from 'crypto';
+// optional only required if you want to listen as socket along with webhook
+// import io from 'socket.io-client';
+// const SOCKET_URL = "https://socket.myearthid.ml";
+
+const GENERATE_QR_API = 'https://server.myearthid.ml/authorize/generateQrCode';
+
+// please place your APIKey received from earthID here
+const API_KEY = "";
+// please place your secretKey received from earthID here
+const SECRET_KEY = "";
+
+var socket;
+var socketId = null;
+
+//function to generate QR code either for login or document
+export async function generateQrCode(type = 'login') {
+    // optional only required if you want to listen as socket along with webhook
+    // socketId = await openSocketConnection();
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!API_KEY) {
+                return new Error("API_KEY is empty!")
             }
-            if(!socketId){
-                console.log("socket not availaible try to reload page")
-                return new Error("socketId not availaible")
+            axios.get(`${GENERATE_QR_API}?socketId=${socketId}`, {
+                headers: await getHeaders()
+            }).then(response => {
+                if (response.data.code === 200) {
+                    return resolve(response.data.result);
+                } else {
+                    let errorString = response.data.message ? response.data.message : "Something went wrong"
+                    return reject(errorString);
+                }
+            }).catch(e => {
+                return reject(e)
+            })
+        } catch (e) {
+            return reject(e)
+        }
+    })
+}
+
+//function to verify webhook request is from EarthId and its valid
+export async function verifyGatewaySignature(req) {
+    try {
+        const hmacReceived = req.headers["x-request-signature-sha-256"];
+        const reqBody = req.body;
+        if (hmacReceived && reqBody) {
+            var hmacCreated = crypto.createHmac('sha256', 'QWERTFCXSWERTGV').update(JSON.stringify()).digest('hex');
+            if (hmacReceived === hmacCreated) {
+                return true;
+            } else {
+                return false;
             }
-            console.log("request Payload ",socketId)
-            //get session key from server and store the socketID with session key in db , to be used further during service Provider API to emit
-            axios.get(`${api}/authorize/generateqr?apiKey=${apiKey}&socketId=${socketId}`, { crossdomain: true } )
-                .then(response => {
-                    if(response.data.code === 400){
-                        let errorString = response.data.message? response.data.message:"Something went wrong"
-                        return reject(errorString);
-                    }   
-                    console.log("Secret key ", response)
-                    // return resolve(response.data.result.toString());
-                    let qrData =`{"apikey":"${apiKey}","encryptionkey":"1234567","reqNo":"${response.data.result}","sessionKey":"${response.data.result}" }`                    
-                    return resolve(qrData);
-                })
-                .catch(e => {
-                    console.log("This is e ", e)
-                    return reject("unable to get secret Token")
-                })
-            }catch(e){
-                console.log("Error in qr Code ",e)
-                return reject(e) 
-            }
-        })
-    },
-/**
- * Start Listening for service provider name
- * @param {* function } cb callback for storing response data
- * @example O/P Successfull
- * {
-        "serviceProvider": "FCart ",
-    }
-    @example O/P Unsuccessfull 
-    Error object
- */
-    async  listenForServiceProviderResponse(cb) {
-        console.log("listenForServiceProviderResponse   ")
-        socket.on(`sendServiceProvider`, data => {
-            console.log("Got Data ",data)
-            cb(null, data);
-        });
-    },
-/**
- * Socket listening for user Data after approval from user through app
- * @param {*} cb callback for data response 
- * @returns {*function} returns a callback with newreq object
- * @example 
- * // Response successfull
- * newreq:{
- * "pressed":false,
- * "userEmail":"srvo@gmail.com",
- * "userMobileNo":"+916361887698",
- * "fname":"Sarvottam",
- * "dob":"05121993",
- * "emailVerified":true
- * "mobileVerified":false
- * "score":250
- * }
- * //Unsuccessfull 
- * * newreq:{
- * "pressed":true,
- * }
- */
-    async listenForUserData(cb) {
-        console.log("listenForServiceProviderResponse   ")
-        socket.on(`userdata`, data => {
-            console.log("Got Data userdata = = =",data)
-            cb (null,data);
-        });
+        } else {
+            return false;
+        }
+    } catch (e) {
+        return Error(e);
     }
 }
-export default externalFunctions
+
+// Helper function to attach required headres and signature
+async function getHeaders() {
+    const timestamp = Date.now().toString();
+    const nonce = await generateRandomNonce();
+    var payloadBody = API_KEY + nonce + timestamp;
+    var signature = crypto.createHmac('sha256', SECRET_KEY).update(JSON.stringify(payloadBody)).digest('hex');
+    return {
+        'x-request-signature-sha-256': signature,
+        'api-key': API_KEY,
+        'timestamp': timestamp,
+        'nonce': nonce,
+    };
+}
+
+// Helper function to generate random nonce
+async function generateRandomNonce() {
+    try {
+        return (Math.floor(100000 + Math.random() * 900000)).toString();
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function openSocketConnection() {
+    return new Promise(async (resolve, reject) => {
+        socket = await io.connect(SOCKET_URL);
+        socket.on('connect', () => {
+            //lisetn for user data
+            socket.on(`userdata`, async data => {
+                if(data.newreq && data.newreq.permission == 'granted') {
+                    let userData = data.newreq;
+                } else { //denied
+                    //show alert or similar to notify user has denied the request.
+                }
+                disconnectSocket();
+            });
+            resolve(socket.id);
+        })
+    })
+}
+
+async function disconnectSocket() {
+    if (socket) {
+        socket.disconnect();
+    }
+}
