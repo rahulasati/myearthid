@@ -45,7 +45,9 @@ Returns **[string]** response web URL string of QR code generated which needs to
     "score": 450,
     "earthId": "42707778",
     "mobileVerified": true,
-    "duration": "86400000"
+    "duration": "86400000",
+    "requestType": "login", //or "document"
+    "documents": ["",""] //if requestType is document and user has authorized to share
 }
 ```
 ### Step 6 (optional): you can listen for socket to receive user data
@@ -87,7 +89,9 @@ socket.on(`userdata`, async userData => {
     "score": 450,
     "earthId": "42707778",
     "mobileVerified": true,
-    "duration": "86400000"
+    "duration": "86400000",
+    "requestType": "login", //or "document"
+    "documents": ["",""] //if requestType is document and user has authorized to share
 }
 ```
 
