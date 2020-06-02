@@ -34,7 +34,33 @@ Returns **[string]** response web URL string of QR code generated which needs to
 
 ### Step 5: You will see authorization popup in EarthId App to authorize or deny the request to share your profile data
 
-### Step 6: You will get user data on registered webhook
+### Step 6: You will get user data on registered webhook, as belows:
+
+#### User approved authorization
+```
+{
+    "permission": "granted",
+    "fname": "Rahul Asati",
+    "userEmail": "rahul@rejolut.com",
+    "userMobileNo": "+918512806087",
+    "dob": "",
+    "emailVerified": true,
+    "score": 450,
+    "earthId": "42707778",
+    "mobileVerified": true,
+    "duration": "86400000",
+    "requestType": "login", //or "document"
+    "documents": ["",""] //if requestType is document and user has authorized to share
+}
+```
+#### User denied authorization
+```
+{
+    "permission": "denied"
+    "earthId": "42707778",
+    "requestType": "login", //or "document"
+}
+```
 
 #### verifyGatewaySignature 
 
