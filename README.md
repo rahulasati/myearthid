@@ -8,7 +8,9 @@
 
 ## Integration Steps
 
-### Step 1: Generate QR code
+### Step 1: Include earthId.js file within your code
+
+### Step 2: Generate QR code
 ```
 const qrCodeLink = await generateQrCode();
 ```
@@ -25,16 +27,16 @@ function to creates a QR code image link for login with earthId or for document.
 ### Response
 Returns **[string]** response web URL string of QR code generated which needs to display as image
 
-### Step 2: Display generated QR code link as image within your application
+### Step 3: Display generated QR code link as image within your application
 ```
 <img id="qrCode" src={qrCodeLink} style={{ width: 150, height: 150 }} />
 ```
 
-### Step 3: Open EarthId Mobile App to scan the QR code
+### Step 4: Open EarthId Mobile App to scan the QR code
 
-### Step 4: Authorize requested site to use your profile information
+### Step 5: You will see authorization popup in EarthId App to authorize or deny the request to share your profile data
 
-### Step 5: You will get user data on registered webhook
+### Step 6: You will get user data on registered webhook
 
 #### User approved Authorization
 ```
