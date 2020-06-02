@@ -90,3 +90,13 @@ socket.on(`userdata`, async userData => {
     "duration": "86400000"
 }
 ```
+
+## verifyGatewaySignature
+
+There are a few HTTP headers that are useful for your application when consuming the webhook request. x-request-type lets your app know, response is for login or document. x-request-signature-sha256 contains a HMAC SHA256 hash based on the webhook payload and a key which is your app secret key. The webhook signature should be validated prior to parsing the webhook payload.
+
+### Parameters
+-   `req` **[object]** req object of postback URL received
+
+### Response
+Returns **[boolean]** signature is valid or not.
