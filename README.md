@@ -13,6 +13,18 @@
 const qrCodeLink = await generateQrCode();
 ```
 
+## generateQrCode
+
+function to creates a QR code image link for login with earthId or for document.
+
+### Parameters
+
+-   `type` **[string]** this is optional, supported values are **login** (to get profile information) or **document** if documents are also required from earthId app.
+- `socketId` **[string]** this is optional, only required if you want to listen data using socket.
+
+### Response
+Returns **[string]** response web URL string of QR code generated which needs to display as image
+
 ### Step 2: Display generated QR code link as image within your application
 ```
 <img id="qrCode" src={qrCodeLink} style={{ width: 150, height: 150 }} />
@@ -37,20 +49,6 @@ const qrCodeLink = await generateQrCode();
 }
 ```
 ### Step 6 (optional): you can listen for socket to receive user data
-
-
-## generateQrCode
-
-function to creates a QR code image link for login with earthId or for document.
-
-### Parameters
-
--   `type` **[string]** this is optional, supported values are **login** (to get profile information) or **document** if documents are also required from earthId app.
-- `socketId` **[string]** this is optional, only required if you want to listen data using socket.
-
-### Response
-Returns **[string]** response web URL string of QR code generated which needs to display as image
-
 
 ## listenForUserData
 
