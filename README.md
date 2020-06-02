@@ -34,9 +34,12 @@ Returns **[string]** response web URL string of QR code generated which needs to
 
 ### Step 4: Authorize requested site to use your profile information
 
-### Step 5: You will get user data on registered webhook, sample response:
+### Step 5: You will get user data on registered webhook
+
+#### User approved Authorization
 ```
 {
+    "permission": "granted",
     "fname": "Rahul Asati",
     "userEmail": "rahul@rejolut.com",
     "userMobileNo": "+918512806087",
@@ -50,6 +53,15 @@ Returns **[string]** response web URL string of QR code generated which needs to
     "documents": ["",""] //if requestType is document and user has authorized to share
 }
 ```
+#### User denied Authorization
+```
+{
+    "permission": "denied"
+    "earthId": "42707778",
+    "requestType": "login", //or "document"
+}
+```
+
 ### Step 6 (optional): you can listen for socket to receive user data
 
 ## listenForUserData
